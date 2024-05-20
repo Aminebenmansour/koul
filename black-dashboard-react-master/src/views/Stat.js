@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import Chart from "chart.js/auto";
 
 const Stat = () => {
@@ -9,7 +10,6 @@ const Stat = () => {
     fetch('http://127.0.0.1:5000/get_nmap')
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         setNmapResults(data);
         const currentDate = new Date();
         setAnalysisDate(currentDate.toLocaleString());
@@ -20,7 +20,7 @@ const Stat = () => {
     if (!Object.keys(nmapResults).length) {
       return;
     }
-
+    console.log(nmapResults)
     const openCount = Object.values(nmapResults).filter(service => service.state === 'open').length;
     const closedCount = Object.values(nmapResults).filter(service => service.state === 'closed').length;
     const filteredCount = Object.values(nmapResults).filter(service => service.state === 'filtered').length;
@@ -60,14 +60,19 @@ const Stat = () => {
       }
     });
 
+    const protocolsFound = Object.keys(nmapResults);
+    const portCount = protocolsFound.length; // Nombre de ports détectés
+    
+    const dataValues = Array(portCount).fill(1); // Remplir le tableau avec la valeur 1 pour chaque section du cercle
+    
     const ctx2 = document.getElementById('foundProtocolsChart').getContext('2d');
     new Chart(ctx2, {
       type: 'pie',
       data: {
-        labels: ['HTTP', 'FTP', 'SSH', 'SMTP', 'DNS'],
+        labels: protocolsFound,
         datasets: [{
           label: 'Protocols Found',
-          data: [25, 20, 15, 10, 5],
+          data: dataValues,
           backgroundColor: [
             'rgba(255, 99, 132, 0.5)',
             'rgba(54, 162, 235, 0.5)',
@@ -98,19 +103,45 @@ const Stat = () => {
         }
       }
     });
+    
   }, [nmapResults]);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: '100vh' }}>
-      <div style={{ margin: '20px' }}>
-        <canvas id="protocolStatsChart" width="350" height="200"></canvas>
-      </div>
-      <div style={{ margin: '20px' }}>
-        <canvas id="foundProtocolsChart" width="350" height="200"></canvas>
-      </div>
-      <div style={{ margin: '20px' }}>
-        <p>Analysis Date and Time: {analysisDate}</p>
-      </div>
+    <div className="content">
+      <Row>
+        <Col md="6">
+          <Card>
+            <CardHeader>
+              <CardTitle tag="h4">Protocol Statistics</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <canvas id="protocolStatsChart" width="350" height="200"></canvas>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col md="6">
+          <Card>
+            <CardHeader>
+              <CardTitle tag="h4">Found Protocols</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <canvas id="foundProtocolsChart" width="350" height="200"></canvas>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="12">
+          <Card>
+            <CardHeader>
+              <CardTitle tag="h4">Analysis Date and Time</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <p>{analysisDate}</p>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

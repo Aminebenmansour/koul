@@ -1448,7 +1448,8 @@ async def run():
 		with open(file_path, 'r') as file:
 			for line in file:
 				# Chercher la ligne qui commence par un numéro de port
-				port_match = re.match(r'^(\d+)/tcp\s+(open|closed)\s+(\w+)\s+(.*)$', line)
+				port_match = re.match(r'^(\d+)/tcp\s+(open|closed|filtered)\s+(\w+)\s+(.*)$', line)
+				print(port_match)
 				if port_match:
 					port, state, service, version = port_match.groups()
 					current_service = service
@@ -1468,7 +1469,6 @@ async def run():
 		with open(file_path, 'r') as file:
 			content = file.read()
 			nmap_results = parse_nmap_file(file_path)
-		print(nmap_results)
 
 		return jsonify(nmap_results)
 	RESULTS_DIR = '/home/amine/amine/stage1/ss/SemiAutoRecon/results'
@@ -1511,6 +1511,7 @@ async def run():
 			parsed_results = parse_nmap_file(txt_file)
 			for service, info in parsed_results.items():
 				state = info['state']
+				print(state)
 				if state == 'open':
 					open_ports += 1
 				elif state == 'closed':
@@ -1523,6 +1524,7 @@ async def run():
 	@app.route('/api/scans')
 	def get_scans():
 		ip_directories = os.listdir(RESULTS_DIR)
+		print(ip_directories)
 		scans_data = []
 		for ip_dir in ip_directories:
 			ip_dir_path = os.path.join(RESULTS_DIR, ip_dir)
@@ -1536,6 +1538,25 @@ async def run():
 					'content': file_data
 				})
 		return jsonify(scans_data)
+
+	@app.route('/get_tcp_21_data', methods=['GET'])
+	def get_tcp_21_data():
+		try:
+			# Chemin absolu du répertoire scans/tcp/
+			file_path = os.path.abspath(f'./results/{ip}/scans/tcp21/tcp_21_ftp_anonymous_test.txt')
+			print(file_path)
+			# Vérifier si le fichier existe
+			if os.path.exists(file_path):
+				# Lire le contenu du fichier
+				with open(file_path, 'r') as file:
+					file_content = file.read()
+
+				return file_content
+			else:
+				return jsonify({"error": "File not found"}), 404
+		except Exception as e:
+			return jsonify({"error": str(e)}), 500
+
 	@app.route('/get_data', methods=['GET'])
 	def get_data():
 		try:
@@ -1574,7 +1595,6 @@ async def run():
 					'vulnerabilities': vulnerabilities
 				})
 			return jsonify(protocol_data)
-
 		except Exception as e:
 			print(f"Erreur lors de la récupération des données : {e}")
 			return str(e), 500
@@ -1636,4 +1656,3 @@ def main():
 if __name__ == '__main__':
 
 	main()
-

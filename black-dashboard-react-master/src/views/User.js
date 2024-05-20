@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Chart from "chart.js/auto";
+import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
-import { faDoorClosed } from '@fortawesome/free-solid-svg-icons';
-import { faLaptop } from '@fortawesome/free-solid-svg-icons';
-
+import { faFilter, faDoorOpen, faDoorClosed, faLaptop } from '@fortawesome/free-solid-svg-icons';
+import Chart from "chart.js/auto";
 
 const User = () => {
   const [fileStats, setFileStats] = useState({});
@@ -17,7 +14,6 @@ const User = () => {
     fetch('http://localhost:5000/api/scans')
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         const fileStatsData = processData(data);
         setFileStats(fileStatsData);
         renderFileStatsChart(fileStatsData);
@@ -152,35 +148,48 @@ const User = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '100vh' }}>
-     
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div style={{ margin: '20px', maxWidth: '50%' }}>
-          <h2>File Statistics User</h2>
-          <div style={{ maxWidth: '600px', margin: 'auto' }}>
-            <canvas id="fileStatsChart" width="600" height="600"></canvas>
-          </div>
-        </div>
-        <div style={{ margin: '20px', maxWidth: '50%' }}>
-          <h2>Protocol Statistics User</h2>
-          <div style={{ maxWidth: '600px', margin: 'auto' }}>
-            <canvas id="protocolStatsChart" width="600" height="600"></canvas>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h2><FontAwesomeIcon icon={faLaptop} style={{ color: 'white' }} />:{uniqueIPs.length}</h2>
-        <h2><FontAwesomeIcon icon={faDoorClosed} style={{ color: 'red' }} />:{portCounts.closed_ports}
-</h2>
-        <h2><FontAwesomeIcon icon={faDoorOpen} style={{ color: 'yellow' }}/>:{portCounts.open_ports}
-</h2>
-        <h2> <FontAwesomeIcon icon={faFilter}  style={{ color: 'green' }} />  :{portCounts.filtered_ports}
-</h2>
-      </div>
+    <div className="content">
+      <Row>
+        <Col md="6">
+          <Card>
+            <CardHeader>
+              <CardTitle tag="h4">File Statistics User</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <canvas id="fileStatsChart" width="600" height="600"></canvas>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col md="6">
+          <Card>
+            <CardHeader>
+              <CardTitle tag="h4">Protocol Statistics User</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <canvas id="protocolStatsChart" width="600" height="600"></canvas>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="12">
+          <Card>
+            <CardHeader>
+              <CardTitle tag="h4">IP and Port Statistics</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <div style={{ textAlign: 'center' }}>
+                <h2><FontAwesomeIcon icon={faLaptop} style={{ color: 'black' }} />: {uniqueIPs.length}</h2>
+                <h2><FontAwesomeIcon icon={faDoorClosed} style={{ color: 'red' }} />: {portCounts.closed_ports}</h2>
+                <h2><FontAwesomeIcon icon={faDoorOpen} style={{ color: 'yellow' }} />: {portCounts.open_ports}</h2>
+                <h2><FontAwesomeIcon icon={faFilter} style={{ color: 'green' }} />: {portCounts.filtered_ports}</h2>
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
     </div>
-      
   );
-  
 };
 
 export default User;

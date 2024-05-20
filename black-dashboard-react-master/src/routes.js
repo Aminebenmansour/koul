@@ -21,10 +21,18 @@ import Stat from "views/Stat";
 import Vuln from "views/Vuln"
 import Nmap from "views/Nmap";
 import User from "views/User";
+import Test from "views/Test";
 import TableList from "views/TableList.js";
 
 var routes = [
- 
+  {
+    path: "/test",
+    name: "Test",
+    rtlName: "test",
+    icon: "tim-icons icon-chart-pie-36",
+    component: <Test/>,
+    layout: "/admin",
+  },
   {
     path: "/user",
     name: "User",

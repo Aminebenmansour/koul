@@ -28,8 +28,10 @@ function Nmap() {
           <NavItem key={index}>
             <NavLink
               className={activeTab === ip ? "active" : ""}
+              style={{ color: '#1d8cf8' }} 
               onClick={() => toggle(ip)}
             >
+              
               {ip}
             </NavLink>
           </NavItem>
