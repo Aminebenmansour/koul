@@ -5,7 +5,7 @@ const path = require("path");
 
 
 const app = express();
-const RESULTS_DIR = '/home/amine/amine/stage1/ss/SemiAutoRecon/results';
+const RESULTS_DIR = '/home/amine/amine/stage1/ss/defansy/results';
 
 app.use(cors()); // Active CORS pour toutes les routes de l'application
 

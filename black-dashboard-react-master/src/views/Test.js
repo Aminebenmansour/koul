@@ -76,10 +76,7 @@ const Test = () => {
           Envoyer
         </button>
       </form>
-      <div>
-        <button onClick={() => handleConfirm('y')}>Oui</button>
-        <button onClick={() => handleConfirm('n')}>Non</button>
-      </div>
+     
       {confirmation && <p>Confirmation : {confirmation}</p>}
       <button 
         onClick={handleStop} 

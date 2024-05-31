@@ -1,6 +1,6 @@
 import appdirs, os
 
-config_dir = appdirs.user_config_dir('SemiAutoRecon')
+config_dir = appdirs.user_config_dir('semiautorecon')
 
 configurable_keys = [
 	'ports',

@@ -4,7 +4,7 @@
 # from dash.dependencies import Output
 
 # # Chemin vers le dossier résultat
-# result_folder = 'stage1/ss/SemiAutoRecon/results'
+# result_folder = 'stage1/ss/semiautorecon/results'
 
 # # Création de l'application Dash
 # app = Dash(__name__)

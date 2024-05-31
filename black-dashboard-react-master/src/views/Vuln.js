@@ -14,9 +14,24 @@ import {
   CardTitle,
 } from "reactstrap";
 
+// Nouveau composant Card pour afficher le contenu du fichier
+function FileContentCard({ title, content }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle tag="h4">{title}</CardTitle>
+      </CardHeader>
+      <CardBody>
+        <pre>{content}</pre>
+      </CardBody>
+    </Card>
+  );
+}
+
 function Vuln(props) {
   const [activeTab, setActiveTab] = useState("");
   const [protocolData, setProtocolData] = useState([]);
+  const [fileContent, setFileContent] = useState("");
 
   useEffect(() => {
     // Récupérer les données de l'API Flask
@@ -28,30 +43,15 @@ function Vuln(props) {
       .catch(error => {
         console.error("Erreur lors de la récupération des données :", error);
       });
+  }, []);
 
+  useEffect(() => {
     // Récupérer les données du fichier tcp_21_ftp_anonymous_test.txt
     axios.get("http://127.0.0.1:5000/get_tcp_21_data")
       .then(response => {
-        const tcp21Data = response.data;
-        console.log(tcp21Data)
-        if (tcp21Data) {
-          setProtocolData(prevData => {
-            // Vérifier si tcp21 existe déjà dans protocolData
-            const updatedData = prevData.map(data => {
-              if (data.protocol === "tcp21") {
-                return { ...data, vulnerabilities: [...(data.vulnerabilities || []), ...tcp21Data.vulnerabilities] };
-              }
-              return data;
-            });
-
-            // Ajouter tcp21 si ce n'est pas déjà présent
-            if (!updatedData.some(data => data.protocol === "tcp21")) {
-              updatedData.push({ protocol: "tcp21", vulnerabilities: tcp21Data.vulnerabilities });
-            }
-
-            return updatedData;
-          });
-        }
+        // Ajouter les données dans le tableau protocolData
+        setProtocolData(prevData => [...prevData, response.data]);
+        setFileContent(response.data);
       })
       .catch(error => {
         console.error("Erreur lors de la récupération des données TCP 21 :", error);
@@ -98,6 +98,14 @@ function Vuln(props) {
                 </Card>
               </Col>
             </Row>
+            {/* Affichage du contenu du fichier dans un Card indépendant */}
+            {data.protocol === 'tcp21' && (
+              <Row>
+                <Col md="12">
+                  <FileContentCard title="FTP Anonymous Exploit" content={fileContent} />
+                </Col>
+              </Row>
+            )}
           </TabPane>
         ))}
       </TabContent>

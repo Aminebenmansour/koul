@@ -212,7 +212,7 @@ class Report(Plugin):
 	def __init__(self):
 		super().__init__()
 
-class SemiAutoRecon(object):
+class semiautorecon(object):
 
 	def __init__(self):
 		self.pending_targets = []
@@ -355,7 +355,7 @@ class SemiAutoRecon(object):
 			combined_patterns = self.patterns
 
 		print()
-		warn('{byellow}SemiAutoRecon wants to execute the following command:{rst} {cmd}')
+		warn('{byellow}semiautorecon wants to execute the following command:{rst} {cmd}')
 		while True:
 			termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, config['terminal_settings'])
 			confirm = input('\nType "EXECUTE" to execute this command, "SKIP" to skip it: ')

@@ -1,12 +1,12 @@
 > It's like bowling with bumpers, but you have to verbally agree to every throw. - [@ippsec](https://twitter.com/ippsec)
 
-For a quick introduction to SemiAutoRecon, please see the below YouTube video:
+For a quick introduction to semiautorecon, please see the below YouTube video:
 
-[![SemiAutoRecon YouTube Video](https://img.youtube.com/vi/fy4WWszV9Oc/0.jpg)](https://www.youtube.com/watch?v=fy4WWszV9Oc)
+[![semiautorecon YouTube Video](https://img.youtube.com/vi/fy4WWszV9Oc/0.jpg)](https://www.youtube.com/watch?v=fy4WWszV9Oc)
 
-# SemiAutoRecon
+# semiautorecon
 
-SemiAutoRecon is a multi-threaded network reconnaissance tool which performs semi-automated enumeration of services. It is intended as a time-saving tool for use in CTFs and other penetration testing environments (e.g. OSCP). It is most definitely not useful in real-world engagements.
+semiautorecon is a multi-threaded network reconnaissance tool which performs semi-automated enumeration of services. It is intended as a time-saving tool for use in CTFs and other penetration testing environments (e.g. OSCP). It is most definitely not useful in real-world engagements.
 
 The tool works by firstly performing port scans / service detection scans (with explicit permission from the user). From those initial results, the tool will launch further enumeration scans of those services using a number of different tools (with explicit permission from the user). For example, if HTTP is found, feroxbuster will be launched (as well as many others), provided the user gives permission.
 
@@ -14,7 +14,7 @@ Everything in the tool is highly configurable. The default configuration perform
 
 ## Origin
 
-SemiAutoRecon was inspired by three tools which the author used during the OSCP labs: [Reconnoitre](https://github.com/codingo/Reconnoitre), [ReconScan](https://github.com/RoliSoft/ReconScan), and [bscan](https://github.com/welchbj/bscan). While all three tools were useful, none of the three alone had the functionality desired. SemiAutoRecon combines the best features of the aforementioned tools while also implementing many new features to help testers with enumeration of multiple targets.
+semiautorecon was inspired by three tools which the author used during the OSCP labs: [Reconnoitre](https://github.com/codingo/Reconnoitre), [ReconScan](https://github.com/RoliSoft/ReconScan), and [bscan](https://github.com/welchbj/bscan). While all three tools were useful, none of the three alone had the functionality desired. semiautorecon combines the best features of the aforementioned tools while also implementing many new features to help testers with enumeration of multiple targets.
 
 ## Features
 
@@ -38,7 +38,7 @@ SemiAutoRecon was inspired by three tools which the author used during the OSCP 
 
 ## Installation
 
-There are three ways to install SemiAutoRecon: pipx, pip, and manually. Before installation using any of these methods, certain requirements need to be fulfilled. If you have not refreshed your apt cache recently, run the following command so you are installing the latest available packages:
+There are three ways to install semiautorecon: pipx, pip, and manually. Before installation using any of these methods, certain requirements need to be fulfilled. If you have not refreshed your apt cache recently, run the following command so you are installing the latest available packages:
 
 ```bash
 sudo apt update
@@ -46,7 +46,7 @@ sudo apt update
 
 ### Python 3
 
-SemiAutoRecon requires the usage of Python 3.7+ and pip, which can be installed on Kali Linux using the following commands:
+semiautorecon requires the usage of Python 3.7+ and pip, which can be installed on Kali Linux using the following commands:
 
 ```bash
 sudo apt install python3
@@ -55,13 +55,13 @@ sudo apt install python3-pip
 
 ### Supporting Packages
 
-Several commands used in SemiAutoRecon reference the SecLists project, in the directory /usr/share/seclists/. You can either manually download the SecLists project to this directory (https://github.com/danielmiessler/SecLists), or if you are using Kali Linux (**highly recommended**) you can run the following commands:
+Several commands used in semiautorecon reference the SecLists project, in the directory /usr/share/seclists/. You can either manually download the SecLists project to this directory (https://github.com/danielmiessler/SecLists), or if you are using Kali Linux (**highly recommended**) you can run the following commands:
 
 ```bash
 sudo apt install seclists
 ```
 
-SemiAutoRecon will still run if you do not install SecLists, though several commands may fail, and some manual commands may not run either.
+semiautorecon will still run if you do not install SecLists, though several commands may fail, and some manual commands may not run either.
 
 Additionally the following commands may need to be installed, depending on your OS:
 
@@ -95,7 +95,7 @@ sudo apt install seclists curl enum4linux feroxbuster gobuster impacket-scripts 
 
 ### Installation Method #1: pipx (Recommended)
 
-It is recommended you use `pipx` to install SemiAutoRecon. pipx will install SemiAutoRecon in it's own virtual environment, and make it available in the global context, avoiding conflicting package dependencies and the resulting instability. First, install pipx using the following commands:
+It is recommended you use `pipx` to install semiautorecon. pipx will install semiautorecon in it's own virtual environment, and make it available in the global context, avoiding conflicting package dependencies and the resulting instability. First, install pipx using the following commands:
 
 
 ```bash
@@ -106,13 +106,13 @@ python3 -m pipx ensurepath
 
 You will have to re-source your ~/.bashrc or ~/.zshrc file (or open a new tab) after running these commands in order to use pipx.
 
-Install SemiAutoRecon using the following command:
+Install semiautorecon using the following command:
 
 ```bash
-pipx install git+https://github.com/Tib3rius/SemiAutoRecon.git
+pipx install git+https://github.com/Tib3rius/semiautorecon.git
 ```
 
-Note that if you want to run SemiAutoRecon using sudo (required for faster SYN scanning and UDP scanning), you have to use _one_ of the following examples:
+Note that if you want to run semiautorecon using sudo (required for faster SYN scanning and UDP scanning), you have to use _one_ of the following examples:
 
 ```bash
 sudo env "PATH=$PATH" semiautorecon [OPTIONS]
@@ -121,19 +121,19 @@ sudo $(which semiautorecon) [OPTIONS]
 
 ### Installation Method #2: pip
 
-Alternatively you can use `pip` to install SemiAutoRecon using the following command:
+Alternatively you can use `pip` to install semiautorecon using the following command:
 
 ```bash
-python3 -m pip install git+https://github.com/Tib3rius/SemiAutoRecon.git
+python3 -m pip install git+https://github.com/Tib3rius/semiautorecon.git
 ```
 
-Note that if you want to run SemiAutoRecon using sudo (required for faster SYN scanning and UDP scanning), you will have to run the above command as the root user (or using sudo).
+Note that if you want to run semiautorecon using sudo (required for faster SYN scanning and UDP scanning), you will have to run the above command as the root user (or using sudo).
 
-Similarly to `pipx`, if installed using `pip` you can run SemiAutoRecon by simply executing `semiautorecon`.
+Similarly to `pipx`, if installed using `pip` you can run semiautorecon by simply executing `semiautorecon`.
 
 ### Installation Method #3: Manually
 
-If you'd prefer not to use `pip` or `pipx`, you can always still install and execute `semiautorecon.py` manually as a script. From within the SemiAutoRecon directory, install the dependencies:
+If you'd prefer not to use `pip` or `pipx`, you can always still install and execute `semiautorecon.py` manually as a script. From within the semiautorecon directory, install the dependencies:
 
 ```bash
 python3 -m pip install -r requirements.txt
@@ -149,7 +149,7 @@ python3 semiautorecon.py [OPTIONS] 127.0.0.1
 
 ### pipx
 
-Upgrading SemiAutoRecon when it has been installed with pipx is the easiest, and is why the method is recommended. Simply run the following command:
+Upgrading semiautorecon when it has been installed with pipx is the easiest, and is why the method is recommended. Simply run the following command:
 
 ```bash
 pipx upgrade semiautorecon
@@ -157,32 +157,32 @@ pipx upgrade semiautorecon
 
 ### pip
 
-If you've installed SemiAutoRecon using pip, you will first have to uninstall SemiAutoRecon and then re-install using the same install command:
+If you've installed semiautorecon using pip, you will first have to uninstall semiautorecon and then re-install using the same install command:
 
 ```bash
 python3 -m pip uninstall semiautorecon
-python3 -m pip install git+https://github.com/Tib3rius/SemiAutoRecon.git
+python3 -m pip install git+https://github.com/Tib3rius/semiautorecon.git
 ```
 
 ### Manually
 
-If you've installed SemiAutoRecon manually, simply change to the SemiAutoRecon directory and run the following command:
+If you've installed semiautorecon manually, simply change to the semiautorecon directory and run the following command:
 
 ```bash
 git pull
 ```
 
-Assuming you did not modify any of the content in the SemiAutoRecon directory, this should pull the latest code from this GitHub repo, after which you can run SemiAutoRecon using the semiautorecon.py script as per usual.
+Assuming you did not modify any of the content in the semiautorecon directory, this should pull the latest code from this GitHub repo, after which you can run semiautorecon using the semiautorecon.py script as per usual.
 
 ### Plugins
 
-A plugin update process is in the works. Until then, after upgrading, remove the ~/.config/SemiAutoRecon directory and run SemiAutoRecon with any argument to repopulate with the latest files.
+A plugin update process is in the works. Until then, after upgrading, remove the ~/.config/semiautorecon directory and run semiautorecon with any argument to repopulate with the latest files.
 
-If you depend on the ~/.config/SemiAutoRecon/config.toml file (i.e. you have made modifications to it) then simply remove everything in the ~/.config/SemiAutoRecon apart from the config.toml file (including the VERSION-x.x.x file).
+If you depend on the ~/.config/semiautorecon/config.toml file (i.e. you have made modifications to it) then simply remove everything in the ~/.config/semiautorecon apart from the config.toml file (including the VERSION-x.x.x file).
 
 ## Usage
 
-SemiAutoRecon uses Python 3 specific functionality and does not support Python 2.
+semiautorecon uses Python 3 specific functionality and does not support Python 2.
 
 ```
 usage: semiautorecon [-t TARGET_FILE] [-p PORTS] [-m MAX_SCANS] [-mp MAX_PORT_SCANS] [-c CONFIG_FILE] [-g GLOBAL_FILE] [--tags TAGS]
@@ -212,9 +212,9 @@ optional arguments:
   -mp MAX_PORT_SCANS, --max-port-scans MAX_PORT_SCANS
                         The maximum number of concurrent port scans to run. Default: 10 (approx 20% of max-scans unless specified)
   -c CONFIG_FILE, --config CONFIG_FILE
-                        Location of SemiAutoRecon's config file. Default: ~/.config/SemiAutoRecon/config.toml
+                        Location of semiautorecon's config file. Default: ~/.config/semiautorecon/config.toml
   -g GLOBAL_FILE, --global-file GLOBAL_FILE
-                        Location of SemiAutoRecon's global file. Default: ~/.config/SemiAutoRecon/global.toml
+                        Location of semiautorecon's global file. Default: ~/.config/semiautorecon/global.toml
   --tags TAGS           Tags to determine which plugins should be included. Separate tags by a plus symbol (+) to group tags together. Separate
                         groups with a comma (,) to create multiple groups. For a plugin to be included, it must have all the tags specified in
                         at least one group. Default: default
@@ -226,7 +226,7 @@ optional arguments:
                         Override --tags / --exclude-tags for the listed ServiceScan plugins (comma separated). Default: None
   --reports PLUGINS     Override --tags / --exclude-tags for the listed Report plugins (comma separated). Default: None
   --plugins-dir PLUGINS_DIR
-                        The location of the plugins directory. Default: ~/.config/SemiAutoRecon/plugins
+                        The location of the plugins directory. Default: ~/.config/semiautorecon/plugins
   --add-plugins-dir PLUGINS_DIR
                         The location of an additional plugins directory to add to the main one. Default: None
   -l [TYPE], --list [TYPE]
@@ -241,21 +241,21 @@ optional arguments:
                         itself. Default: False
   --heartbeat HEARTBEAT
                         Specifies the heartbeat interval (in seconds) for scan status messages. Default: 60
-  --timeout TIMEOUT     Specifies the maximum amount of time in minutes that SemiAutoRecon should run for. Default: None
+  --timeout TIMEOUT     Specifies the maximum amount of time in minutes that semiautorecon should run for. Default: None
   --target-timeout TARGET_TIMEOUT
                         Specifies the maximum amount of time in minutes that a target should be scanned for before abandoning it and moving on.
                         Default: None
   --nmap NMAP           Override the {nmap_extra} variable in scans. Default: -vv --reason -Pn -T4
   --nmap-append NMAP_APPEND
                         Append to the default {nmap_extra} variable in scans. Default:
-  --proxychains         Use if you are running SemiAutoRecon via proxychains. Default: False
+  --proxychains         Use if you are running semiautorecon via proxychains. Default: False
   --disable-sanity-checks
                         Disable sanity checks that would otherwise prevent the scans from running. Default: False
   --force-services SERVICE [SERVICE ...]
                         A space separated list of services in the following style: tcp/80/http tcp/443/https/secure
-  --accessible          Attempts to make SemiAutoRecon output more accessible to screenreaders. Default: False
+  --accessible          Attempts to make semiautorecon output more accessible to screenreaders. Default: False
   -v, --verbose         Enable verbose output. Repeat for more verbosity.
-  --version             Prints the SemiAutoRecon version and exits.
+  --version             Prints the semiautorecon version and exits.
   -h, --help            Show this help message and exit.
 
 plugin arguments:
@@ -266,7 +266,7 @@ plugin arguments:
                         The tool to use for directory busting. Default: feroxbuster
   --dirbuster.wordlist VALUE [VALUE ...]
                         The wordlist(s) to use when directory busting. Separate multiple wordlists with spaces. Default:
-                        ['~/.config/SemiAutoRecon/wordlists/dirbuster.txt']
+                        ['~/.config/semiautorecon/wordlists/dirbuster.txt']
   --dirbuster.threads VALUE
                         The number of threads to use when directory busting. Default: 10
   --dirbuster.ext VALUE
@@ -288,14 +288,14 @@ global plugin arguments:
 
 ### Verbosity
 
-SemiAutoRecon supports four levels of verbosity:
+semiautorecon supports four levels of verbosity:
 
-* (none) Minimal output. SemiAutoRecon will announce when scanning targets starts / ends.
-* (-v) Verbose output. SemiAutoRecon will additionally announce when plugins start running, and report open ports and identified services.
-* (-vv) Very verbose output. SemiAutoRecon will additionally specify the exact commands which are being run by plugins, highlight any patterns which are matched in command output, and announce when plugins end.
-* (-vvv) Very, very verbose output. SemiAutoRecon will output everything. Literally every line from all commands which are currently running. When scanning multiple targets concurrently, this can lead to a ridiculous amount of output. It is not advised to use -vvv unless you absolutely need to see live output from commands.
+* (none) Minimal output. semiautorecon will announce when scanning targets starts / ends.
+* (-v) Verbose output. semiautorecon will additionally announce when plugins start running, and report open ports and identified services.
+* (-vv) Very verbose output. semiautorecon will additionally specify the exact commands which are being run by plugins, highlight any patterns which are matched in command output, and announce when plugins end.
+* (-vvv) Very, very verbose output. semiautorecon will output everything. Literally every line from all commands which are currently running. When scanning multiple targets concurrently, this can lead to a ridiculous amount of output. It is not advised to use -vvv unless you absolutely need to see live output from commands.
 
-Note: You can change the verbosity of SemiAutoRecon mid-scan by pressing the up and down arrow keys.
+Note: You can change the verbosity of semiautorecon mid-scan by pressing the up and down arrow keys.
 
 ### Results
 
@@ -328,8 +328,8 @@ The report directory contains some auto-generated files and directories that are
 * proof.txt can be used to store the proof.txt flag found on targets.
 * The screenshots directory is intended to contain the screenshots you use to document the exploitation of the target.
 
-The scans directory is where all results from scans performed by SemiAutoRecon will go. This includes port scans / service detection scans, as well as any service enumeration scans. It also contains two other files:
-* \_commands.log contains a list of every command SemiAutoRecon ran against the target. This is useful if one of the commands fails and you want to run it again with modifications.
+The scans directory is where all results from scans performed by semiautorecon will go. This includes port scans / service detection scans, as well as any service enumeration scans. It also contains two other files:
+* \_commands.log contains a list of every command semiautorecon ran against the target. This is useful if one of the commands fails and you want to run it again with modifications.
 * \_manual_commands.txt contains any commands that are deemed "too dangerous" to run automatically, either because they are too intrusive, require modification based on human analysis, or just work better when there is a human monitoring them.
 
 By default, directories are created for each open port (e.g. tcp80, udp53) and scan results for the services found on those ports are stored in their respective directories. You can disable this behavior using the --no-port-dirs command line option, and scan results will instead be stored in the scans directory itself.

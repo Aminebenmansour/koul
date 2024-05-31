@@ -14,7 +14,7 @@ colorama.init()
 
 from semiautorecon.config import config, configurable_keys, configurable_boolean_keys
 from semiautorecon.io import slugify, e, fformat, cprint, debug, info, warn, error, fail, CommandStreamReader
-from semiautorecon.plugins import Pattern, PortScan, ServiceScan, Report, SemiAutoRecon
+from semiautorecon.plugins import Pattern, PortScan, ServiceScan, Report, semiautorecon
 from semiautorecon.targets import Target, Service
 
 VERSION = "2.0.18"
@@ -37,12 +37,12 @@ else:
 	if not os.path.exists(os.path.join(config['config_dir'], 'wordlists')):
 		shutil.copytree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'wordlists'), os.path.join(config['config_dir'], 'wordlists'))
 	if not os.path.exists(os.path.join(config['config_dir'], 'VERSION-' + VERSION)):
-		warn('It looks like the config/plugins in ' + config['config_dir'] + ' are outdated. Please remove the ' + config['config_dir'] + ' directory and re-run SemiAutoRecon to rebuild them.')
+		warn('It looks like the config/plugins in ' + config['config_dir'] + ' are outdated. Please remove the ' + config['config_dir'] + ' directory and re-run semiautorecon to rebuild them.')
 
 # Save current terminal settings so we can restore them.
 config['terminal_settings'] = termios.tcgetattr(sys.stdin.fileno())
 
-semiautorecon = SemiAutoRecon()
+semiautorecon = semiautorecon()
 
 def calculate_elapsed_time(start_time, short=False):
 	elapsed_seconds = round(time.time() - start_time)
@@ -767,8 +767,8 @@ async def run():
 	parser.add_argument('-p', '--ports', action='store', type=str, help='Comma separated list of ports / port ranges to scan. Specify TCP/UDP ports by prepending list with T:/U: To scan both TCP/UDP, put port(s) at start or specify B: e.g. 53,T:21-25,80,U:123,B:123. Default: %(default)s')
 	parser.add_argument('-m', '--max-scans', action='store', type=int, help='The maximum number of concurrent scans to run. Default: %(default)s')
 	parser.add_argument('-mp', '--max-port-scans', action='store', type=int, help='The maximum number of concurrent port scans to run. Default: 10 (approx 20%% of max-scans unless specified)')
-	parser.add_argument('-c', '--config', action='store', type=str, default=config_file, dest='config_file', help='Location of SemiAutoRecon\'s config file. Default: %(default)s')
-	parser.add_argument('-g', '--global-file', action='store', type=str, help='Location of SemiAutoRecon\'s global file. Default: %(default)s')
+	parser.add_argument('-c', '--config', action='store', type=str, default=config_file, dest='config_file', help='Location of semiautorecon\'s config file. Default: %(default)s')
+	parser.add_argument('-g', '--global-file', action='store', type=str, help='Location of semiautorecon\'s global file. Default: %(default)s')
 	parser.add_argument('--tags', action='store', type=str, default='default', help='Tags to determine which plugins should be included. Separate tags by a plus symbol (+) to group tags together. Separate groups with a comma (,) to create multiple groups. For a plugin to be included, it must have all the tags specified in at least one group. Default: %(default)s')
 	parser.add_argument('--exclude-tags', action='store', type=str, default='', metavar='TAGS', help='Tags to determine which plugins should be excluded. Separate tags by a plus symbol (+) to group tags together. Separate groups with a comma (,) to create multiple groups. For a plugin to be excluded, it must have all the tags specified in at least one group. Default: %(default)s')
 	parser.add_argument('--port-scans', action='store', type=str, metavar='PLUGINS', help='Override --tags / --exclude-tags for the listed PortScan plugins (comma separated). Default: %(default)s')
@@ -782,19 +782,19 @@ async def run():
 	parser.add_argument('--only-scans-dir', action='store_true', help='Only create the "scans" directory for results. Other directories (e.g. exploit, loot, report) will not be created. Default: %(default)s')
 	parser.add_argument('--no-port-dirs', action='store_true', help='Don\'t create directories for ports (e.g. scans/tcp80, scans/udp53). Instead store all results in the "scans" directory itself. Default: %(default)s')
 	parser.add_argument('--heartbeat', action='store', type=int, help='Specifies the heartbeat interval (in seconds) for scan status messages. Default: %(default)s')
-	parser.add_argument('--timeout', action='store', type=int, help='Specifies the maximum amount of time in minutes that SemiAutoRecon should run for. Default: %(default)s')
+	parser.add_argument('--timeout', action='store', type=int, help='Specifies the maximum amount of time in minutes that semiautorecon should run for. Default: %(default)s')
 	parser.add_argument('--target-timeout', action='store', type=int, help='Specifies the maximum amount of time in minutes that a target should be scanned for before abandoning it and moving on. Default: %(default)s')
 	nmap_group = parser.add_mutually_exclusive_group()
 	nmap_group.add_argument('--nmap', action='store', help='Override the {nmap_extra} variable in scans. Default: %(default)s')
 	nmap_group.add_argument('--nmap-append', action='store', help='Append to the default {nmap_extra} variable in scans. Default: %(default)s')
-	parser.add_argument('--proxychains', action='store_true', help='Use if you are running SemiAutoRecon via proxychains. Default: %(default)s')
+	parser.add_argument('--proxychains', action='store_true', help='Use if you are running semiautorecon via proxychains. Default: %(default)s')
 	parser.add_argument('--disable-sanity-checks', action='store_true', help='Disable sanity checks that would otherwise prevent the scans from running. Default: %(default)s')
 	parser.add_argument('--force-services', action='store', nargs='+', metavar='SERVICE', help='A space separated list of services in the following style: tcp/80/http tcp/443/https/secure')
 	parser.add_argument('-mpti', '--max-plugin-target-instances', action='store', nargs='+', metavar='PLUGIN:NUMBER', help='A space separated list of plugin slugs with the max number of instances (per target) in the following style: nmap-http:2 dirbuster:1. Default: %(default)s')
 	parser.add_argument('-mpgi', '--max-plugin-global-instances', action='store', nargs='+', metavar='PLUGIN:NUMBER', help='A space separated list of plugin slugs with the max number of global instances in the following style: nmap-http:2 dirbuster:1. Default: %(default)s')
-	parser.add_argument('--accessible', action='store_true', help='Attempts to make SemiAutoRecon output more accessible to screenreaders. Default: %(default)s')
+	parser.add_argument('--accessible', action='store_true', help='Attempts to make semiautorecon output more accessible to screenreaders. Default: %(default)s')
 	parser.add_argument('-v', '--verbose', action='count', help='Enable verbose output. Repeat for more verbosity.')
-	parser.add_argument('--version', action='store_true', help='Prints the SemiAutoRecon version and exits.')
+	parser.add_argument('--version', action='store_true', help='Prints the semiautorecon version and exits.')
 	parser.error = lambda s: fail(s[0].upper() + s[1:])
 	args, unknown = parser.parse_known_args()
 
@@ -803,7 +803,7 @@ async def run():
 	semiautorecon.argparse = parser
 
 	if args.version:
-		print('SemiAutoRecon v' + VERSION)
+		print('semiautorecon v' + VERSION)
 		sys.exit(0)
 
 	def unknown_help():
@@ -814,7 +814,7 @@ async def run():
 	# Parse config file and args for global.toml first.
 	if not args.config_file:
 		unknown_help()
-		fail('Error: Could not find config.toml in the current directory or ~/.config/SemiAutoRecon.')
+		fail('Error: Could not find config.toml in the current directory or ~/.config/semiautorecon.')
 
 	if not os.path.isfile(args.config_file):
 		unknown_help()
@@ -847,7 +847,7 @@ async def run():
 
 	if not config['plugins_dir']:
 		unknown_help()
-		fail('Error: Could not find plugins directory in the current directory or ~/.config/SemiAutoRecon.')
+		fail('Error: Could not find plugins directory in the current directory or ~/.config/semiautorecon.')
 
 	if not os.path.isdir(config['plugins_dir']):
 		unknown_help()
@@ -914,7 +914,7 @@ async def run():
 
 	if not config['global_file']:
 		unknown_help()
-		fail('Error: Could not find global.toml in the current directory or ~/.config/SemiAutoRecon.')
+		fail('Error: Could not find global.toml in the current directory or ~/.config/semiautorecon.')
 
 	if not os.path.isfile(config['global_file']):
 		unknown_help()
@@ -1524,6 +1524,8 @@ async def run():
 	@app.route('/api/scans')
 	def get_scans():
 		ip_directories = os.listdir(RESULTS_DIR)
+		print('eeeeeeeeeeeeeeeee')
+		print(ip_directories)
 		print(ip_directories)
 		scans_data = []
 		for ip_dir in ip_directories:
@@ -1550,7 +1552,7 @@ async def run():
 				# Lire le contenu du fichier
 				with open(file_path, 'r') as file:
 					file_content = file.read()
-
+			
 				return file_content
 			else:
 				return jsonify({"error": "File not found"}), 404
@@ -1629,7 +1631,7 @@ async def run():
 		cancel_all_tasks(None, None)
 
 		elapsed_time = calculate_elapsed_time(start_time)
-		warn('{byellow}SemiAutoRecon took longer than the specified timeout period (' + str(config['timeout']) + ' min). Cancelling all scans and exiting.{rst}')
+		warn('{byellow}semiautorecon took longer than the specified timeout period (' + str(config['timeout']) + ' min). Cancelling all scans and exiting.{rst}')
 	else:
 		while len(asyncio.all_tasks()) > 1: # this code runs in the main() task so it will be the only task left running
 			await asyncio.sleep(1)
@@ -1639,7 +1641,7 @@ async def run():
 		info('{bright}Don\'t forget to check out more commands to run manually in the _manual_commands.txt file in each target\'s scans directory!')
 
 	if semiautorecon.missing_services:
-		warn('{byellow}SemiAutoRecon identified the following services, but could not match them to any plugins based on the service name. Please report these to Tib3rius: ' + ', '.join(semiautorecon.missing_services) + '{rst}')
+		warn('{byellow}semiautorecon identified the following services, but could not match them to any plugins based on the service name. Please report these to Tib3rius: ' + ', '.join(semiautorecon.missing_services) + '{rst}')
 
 	termios.tcsetattr(sys.stdin, termios.TCSADRAIN, config['terminal_settings'])
 
